@@ -1,0 +1,221 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مستوى الإنجاز - Gamified Tasks</title>
+    <style>
+        :root {
+            --primary: #6c5ce7;
+            --secondary: #00cec9;
+            --bg: #dfe6e9;
+            --card-bg: #ffffff;
+            --text: #2d3436;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .stats-container {
+            background: #f1f2f6;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .level-badge {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .xp-bar-container {
+            background: #e4e7eb;
+            border-radius: 10px;
+            height: 20px;
+            width: 100%;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .xp-bar {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            height: 100%;
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+
+        .input-section {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            outline: none;
+            font-size: 16px;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--primary);
+        }
+
+        button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .task-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .task-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: #f9f9f9;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border-right: 5px solid var(--primary);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .task-item button {
+            background-color: #2ed573;
+            padding: 5px 10px;
+            font-size: 14px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>مستوى الإنجاز ⚔️</h1>
+    <p style="text-align: center; margin-top: 0; color: #777;">حوّل مهامك اليومية إلى مغامرة</p>
+
+    <div class="stats-container">
+        <div class="level-badge">المستوى: <span id="level">1</span></div>
+        <div id="xp-text" style="margin-top: 5px; font-size: 14px;">النقاط (XP): 0 / 100</div>
+        <div class="xp-bar-container">
+            <div class="xp-bar" id="xp-bar"></div>
+        </div>
+    </div>
+
+    <div class="input-section">
+        <input type="text" id="task-input" placeholder="اكتب مهمتك الجديدة هنا...">
+        <button onclick="addTask()">إضافة</button>
+    </div>
+
+    <ul class="task-list" id="task-list">
+        </ul>
+</div>
+
+<script>
+    // المتغيرات الأساسية لنظام الألعاب
+    let xp = 0;
+    let level = 1;
+    const xpNeededPerLevel = 100;
+
+    function addTask() {
+        const input = document.getElementById('task-input');
+        const taskText = input.value.trim();
+
+        if (taskText === '') return;
+
+        const taskList = document.getElementById('task-list');
+
+        // إنشاء عنصر المهمة
+        const li = document.createElement('li');
+        li.className = 'task-item';
+        li.innerHTML = `
+            <span>${taskText}</span>
+            <button onclick="completeTask(this)">تم (+25 XP)</button>
+        `;
+
+        taskList.appendChild(li);
+        input.value = ''; // تفريغ الإدخال
+    }
+
+    function completeTask(button) {
+        // حذف المهمة بتأثير بسيط
+        const taskItem = button.parentElement;
+        taskItem.style.opacity = '0';
+        setTimeout(() => {
+            taskItem.remove();
+        }, 300);
+
+        // إضافة النقاط
+        gainXP(25);
+    }
+
+    function gainXP(amount) {
+        xp += amount;
+
+        // التحقق من الانتقال للمستوى التالي
+        if (xp >= xpNeededPerLevel) {
+            xp = xp - xpNeededPerLevel;
+            level++;
+            alert(`تهانينا! ارتقيت إلى المستوى ${level} 🎉`);
+        }
+
+        updateUI();
+    }
+
+    function updateUI() {
+        document.getElementById('level').innerText = level;
+        document.getElementById('xp-text').innerText = `النقاط (XP): ${xp} / ${xpNeededPerLevel}`;
+        
+        // تحديث شريط الـ XP
+        const percentage = (xp / xpNeededPerLevel) * 100;
+        document.getElementById('xp-bar').style.width = percentage + '%';
+    }
+</script>
+
+</body>
+</html>
