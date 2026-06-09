@@ -1,135 +1,226 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مستوى الإنجاز - Gamified Tasks</title>
+    
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4100917417394676" crossorigin="anonymous"></script>
+
     <style>
         :root {
-            --primary: #6c5ce7;
+            --primary: #8e44ad;
+            --primary-light: #a29bfe;
             --secondary: #00cec9;
-            --bg: #dfe6e9;
-            --card-bg: #ffffff;
-            --text: #2d3436;
+            --bg: #0f172a; /* خلفية داكنة احترافية */
+            --card-bg: #1e293b; /* لون الكارت */
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg);
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: radial-gradient(circle at top, #1e1b4b, var(--bg));
             color: var(--text);
             margin: 0;
             padding: 20px;
             display: flex;
             justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
         }
 
         .container {
             width: 100%;
-            max-width: 500px;
+            max-width: 480px;
             background: var(--card-bg);
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            padding: 30px;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
         }
 
         h1 {
             text-align: center;
-            color: var(--primary);
-            margin-bottom: 5px;
+            color: #fff;
+            font-size: 28px;
+            margin: 0 0 8px 0;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            text-shadow: 0 0 15px rgba(142, 68, 173, 0.6);
+        }
+
+        .subtitle {
+            text-align: center;
+            margin: 0 0 25px 0;
+            color: var(--text-muted);
+            font-size: 14px;
         }
 
         .stats-container {
-            background: #f1f2f6;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
+            background: rgba(15, 23, 42, 0.6);
+            padding: 20px;
+            border-radius: 16px;
+            margin-bottom: 25px;
             text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
         }
 
         .level-badge {
-            font-size: 24px;
-            font-weight: bold;
-            color: var(--primary);
+            font-size: 20px;
+            font-weight: 800;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .level-number {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 4px 14px;
+            border-radius: 12px;
+            font-size: 22px;
+            box-shadow: 0 4px 10px rgba(142, 68, 173, 0.3);
+        }
+
+        #xp-text {
+            margin-top: 12px;
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 600;
         }
 
         .xp-bar-container {
-            background: #e4e7eb;
-            border-radius: 10px;
-            height: 20px;
+            background: #334155;
+            border-radius: 20px;
+            height: 12px;
             width: 100%;
-            margin-top: 10px;
+            margin-top: 8px;
             overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .xp-bar {
             background: linear-gradient(90deg, var(--primary), var(--secondary));
             height: 100%;
             width: 0%;
-            transition: width 0.4s ease;
+            border-radius: 20px;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 10px var(--primary-light);
         }
 
         .input-section {
             display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
+            gap: 12px;
+            margin-bottom: 25px;
         }
 
         input[type="text"] {
             flex: 1;
-            padding: 10px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
+            padding: 14px 16px;
+            background: #334155;
+            border: 2px solid transparent;
+            border-radius: 14px;
             outline: none;
-            font-size: 16px;
+            font-size: 15px;
+            color: #fff;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]::placeholder {
+            color: #64748b;
         }
 
         input[type="text"]:focus {
             border-color: var(--primary);
+            background: #1e293b;
+            box-shadow: 0 0 15px rgba(142, 68, 173, 0.2);
         }
 
-        button {
-            background-color: var(--primary);
+        .btn-add {
+            background: linear-gradient(135deg, var(--primary), #732d9b);
             color: white;
             border: none;
-            padding: 10px 15px;
-            border-radius: 8px;
+            padding: 0 24px;
+            border-radius: 14px;
             cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
+            font-size: 15px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(142, 68, 173, 0.3);
         }
 
-        button:hover {
-            opacity: 0.9;
+        .btn-add:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(142, 68, 173, 0.5);
+        }
+
+        .btn-add:active {
+            transform: translateY(0);
         }
 
         .task-list {
             list-style: none;
             padding: 0;
             margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
 
         .task-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px;
-            background: #f9f9f9;
-            margin-bottom: 10px;
-            border-radius: 8px;
-            border-right: 5px solid var(--primary);
-            animation: fadeIn 0.3s ease;
+            padding: 16px;
+            background: #334155;
+            border-radius: 14px;
+            border-right: 4px solid var(--primary);
+            animation: slideIn 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
+            transition: all 0.3s ease;
         }
 
-        .task-item button {
-            background-color: #2ed573;
-            padding: 5px 10px;
-            font-size: 14px;
+        .task-item:hover {
+            transform: translateX(-3px);
+            background: #3f51b520;
+            border-right-color: var(--secondary);
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+        .task-text {
+            font-size: 15px;
+            font-weight: 500;
+            color: #f1f5f9;
+        }
+
+        .btn-complete {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2);
+        }
+
+        .btn-complete:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(16, 185, 129, 0.4);
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeOut {
+            to { opacity: 0; transform: scale(0.9); }
         }
     </style>
 </head>
@@ -137,19 +228,19 @@
 
 <div class="container">
     <h1>مستوى الإنجاز ⚔️</h1>
-    <p style="text-align: center; margin-top: 0; color: #777;">حوّل مهامك اليومية إلى مغامرة</p>
+    <p class="subtitle">حوّل مهامك اليومية إلى مغامرة ممتعة</p>
 
     <div class="stats-container">
-        <div class="level-badge">المستوى: <span id="level">1</span></div>
-        <div id="xp-text" style="margin-top: 5px; font-size: 14px;">النقاط (XP): 0 / 100</div>
+        <div class="level-badge">المستوى <span class="level-number" id="level">1</span></div>
+        <div id="xp-text">النقاط (XP): 0 / 100</div>
         <div class="xp-bar-container">
             <div class="xp-bar" id="xp-bar"></div>
         </div>
     </div>
 
     <div class="input-section">
-        <input type="text" id="task-input" placeholder="اكتب مهمتك الجديدة هنا...">
-        <button onclick="addTask()">إضافة</button>
+        <input type="text" id="task-input" placeholder="ما هي مغامرتك القادمة؟...">
+        <button class="btn-add" onclick="addTask()">إضافة</button>
     </div>
 
     <ul class="task-list" id="task-list">
@@ -157,7 +248,6 @@
 </div>
 
 <script>
-    // المتغيرات الأساسية لنظام الألعاب
     let xp = 0;
     let level = 1;
     const xpNeededPerLevel = 100;
@@ -166,56 +256,4 @@
         const input = document.getElementById('task-input');
         const taskText = input.value.trim();
 
-        if (taskText === '') return;
-
-        const taskList = document.getElementById('task-list');
-
-        // إنشاء عنصر المهمة
-        const li = document.createElement('li');
-        li.className = 'task-item';
-        li.innerHTML = `
-            <span>${taskText}</span>
-            <button onclick="completeTask(this)">تم (+25 XP)</button>
-        `;
-
-        taskList.appendChild(li);
-        input.value = ''; // تفريغ الإدخال
-    }
-
-    function completeTask(button) {
-        // حذف المهمة بتأثير بسيط
-        const taskItem = button.parentElement;
-        taskItem.style.opacity = '0';
-        setTimeout(() => {
-            taskItem.remove();
-        }, 300);
-
-        // إضافة النقاط
-        gainXP(25);
-    }
-
-    function gainXP(amount) {
-        xp += amount;
-
-        // التحقق من الانتقال للمستوى التالي
-        if (xp >= xpNeededPerLevel) {
-            xp = xp - xpNeededPerLevel;
-            level++;
-            alert(`تهانينا! ارتقيت إلى المستوى ${level} 🎉`);
-        }
-
-        updateUI();
-    }
-
-    function updateUI() {
-        document.getElementById('level').innerText = level;
-        document.getElementById('xp-text').innerText = `النقاط (XP): ${xp} / ${xpNeededPerLevel}`;
-        
-        // تحديث شريط الـ XP
-        const percentage = (xp / xpNeededPerLevel) * 100;
-        document.getElementById('xp-bar').style.width = percentage + '%';
-    }
-</script>
-
-</body>
-</html>
+        if
